@@ -155,45 +155,50 @@ alpha-beta pruning을 통해 비효율적인 경로를 조기에 차단하여 �
 
 *TicTacToeAI
 *기본 설정
-import pygame, sys, random
-from pygame.locals import *
-from tttAI import *
 
-width = 300
-height = 400
-box_size = 80
-text_size = 50
-white = (255, 255, 255)
-black = (0, 0, 0)
-blue = (0, 0, 255)
+    import pygame, sys, random
+    from pygame.locals import *
+    from tttAI import *
 
-fps = 30
-fps_clock = pygame.time.Clock()
+    width = 300
+    height = 400
+    box_size = 80
+    text_size = 50
+    white = (255, 255, 255)
+    black = (0, 0, 0)
+    blue = (0, 0, 255)
+
+    fps = 30
+    fps_clock = pygame.time.Clock()
+
 화면의 크기, 색상, 글자 크기 등을 설정합니다.
 tttAI 모듈에서 AI 클래스를 가져옵니다.
 
 *메인 루프
-def main():
-    pygame.init()
-    surface = pygame.display.set_mode((width, height))
-    pygame.display.set_caption('Tic Tac Toe')
-    surface.fill(white)
-    menu = Menu(surface)
-    ttt = TTT(surface, menu)
-    while True:
-        run_game(surface, menu, ttt)
-        menu.is_continue()
+
+    def main():
+        pygame.init()
+        surface = pygame.display.set_mode((width, height))
+        pygame.display.set_caption('Tic Tac Toe')
+        surface.fill(white)
+        menu = Menu(surface)
+        ttt = TTT(surface, menu)
+        while True:
+            run_game(surface, menu, ttt)
+            menu.is_continue()
+
 파이게임을 초기화하고, 화면을 설정합니다.
 게임의 메인 루프를 실행하여 틱택토 게임을 관리합니다.
 
 *게임 실행 및 종료
-def run_game(surface, menu, ttt):
-    reset_game(surface, menu, ttt)
-    while True:
-        is_user = True
-        if ttt.turn == computer:
-            is_user = False
-            ttt.play_computer()
+
+    def run_game(surface, menu, ttt):
+        reset_game(surface, menu, ttt)
+        while True:
+            is_user = True
+            if ttt.turn == computer:
+                is_user = False
+                ttt.play_computer()
 
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -208,18 +213,20 @@ def run_game(surface, menu, ttt):
         pygame.display.update()
         fps_clock.tick(fps)
         
-def terminate():
-    pygame.quit()
-    sys.exit()
+    def terminate():
+        pygame.quit()
+        sys.exit()
+
 run_game: 게임을 실행하고, 사용자의 입력을 받아 처리합니다.
 terminate: 게임을 종료하는 함수입니다.
 
 *틱택토 클래스
-class TTT(object):
-    def __init__(self, surface, menu):
-        self.board = [['-' for i in range(3)] for j in range(3)]
-        self.surface = surface
-        self.menu = menu
+
+    class TTT(object):
+        def __init__(self, surface, menu):
+            self.board = [['-' for i in range(3)] for j in range(3)]
+            self.surface = surface
+            self.menu = menu
 
     def init_game(self):
         self.ai = AI(self.board)
@@ -232,33 +239,36 @@ class TTT(object):
         self.ai.minimax(0, -infinity, infinity, computer)
         x, y = self.ai.get_best_coord()
         self.draw_shape(x, y)
+        
 틱택토 게임 보드의 상태와 AI를 관리하는 클래스입니다.
 init_game: 게임을 초기화합니다.
 play_computer: AI가 최적의 수를 선택하여 플레이합니다.
 
 * 메뉴 클래스
-class Menu(object):
-    def __init__(self, surface):
-        self.font = pygame.font.Font('freesansbold.ttf', 20)
-        self.surface = surface
-        self.draw_menu()
-
-    def show_msg(self, msg_id):
-        msg = {'X': 'LOSE!', 'O': 'WIN!', 'tie': 'DRAW!'}
-        self.make_text(msg[msg_id], blue, white, center_x, 30)
-
-    def make_text(self, text, color, bgcolor, cx, cy):
-        surf = self.font.render(text, True, color, bgcolor)
-        rect = surf.get_rect()
-        rect.center = (cx, cy)
-        self.surface.blit(surf, rect)
-        return rect
+  
+        class Menu(object):
+        def __init__(self, surface):
+            self.font = pygame.font.Font('freesansbold.ttf', 20)
+            self.surface = surface
+            self.draw_menu()
+    
+        def show_msg(self, msg_id):
+            msg = {'X': 'LOSE!', 'O': 'WIN!', 'tie': 'DRAW!'}
+            self.make_text(msg[msg_id], blue, white, center_x, 30)
+    
+        def make_text(self, text, color, bgcolor, cx, cy):
+            surf = self.font.render(text, True, color, bgcolor)
+            rect = surf.get_rect()
+            rect.center = (cx, cy)
+            self.surface.blit(surf, rect)
+            return rect
 게임의 메뉴와 메시지 표시를 담당하는 클래스입니다.
 show_msg: 게임의 결과 메시지를 화면에 표시합니다.
 
 *게임 상태 초기화
-def reset_game(surface, menu, ttt):
-    surface.fill(white)
-    menu.draw_menu()
-    ttt.init_game()
+
+    def reset_game(surface, menu, ttt):
+        surface.fill(white)
+        menu.draw_menu()
+        ttt.init_game()
 게임을 초기 상태로 재설정하는 함수입니다.
