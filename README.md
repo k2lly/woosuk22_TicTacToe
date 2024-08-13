@@ -19,21 +19,22 @@ m,n,k-게임으로, (3,3,3)-게임입니다.
 ### 코드 설명
 *tttAI
 변수 선언:
-computer = 'X'
-user = 'O'
-empty = '-'
 
-infinity = 1000
-
-클래스 AI
-초기화 메서드 (__init__):
-class AI(object):
-    def __init__(self, board):
-        self.board = board[:]
-        self.at_score = []
-        self.is_finish()
-        self.get_coords()
-        self.cnt = 0
+    computer = 'X'
+    user = 'O'
+    empty = '-'
+    
+    infinity = 1000
+    
+    클래스 AI
+    초기화 메서드 (__init__):
+    class AI(object):
+        def __init__(self, board):
+            self.board = board[:]
+            self.at_score = []
+            self.is_finish()
+            self.get_coords()
+            self.cnt = 0
 
     def is_full(self, board):
         for y in range(3):
@@ -43,6 +44,7 @@ class AI(object):
         return True
 
 보드가 가득 찼는지 확인합니다. 모든 칸이 채워졌다면 True를 반환합니다.
+    
     def is_win(self, player, board):
         # 가로와 세로  체크
         for y in range(3):
@@ -70,12 +72,14 @@ class AI(object):
 
 
 주어진 플레이어(computer 또는 user)가 승리했는지 확인합니다. 가로, 세로, 대각선에서 같은 기호가 3개 연속으로 있는지 체크합니다.
+    
     def is_finish(self):
         return (self.is_full(self.board) or
                 self.is_win(computer, self.board) or
                 self.is_win(user, self.board))
 
 게임이 종료되었는지(보드가 가득 찼거나 누군가 승리했는지) 확인합니다.
+    
     def get_coords(self):
         coords = []
         for y in range(3):
@@ -85,6 +89,7 @@ class AI(object):
         return coords
 
 현재 보드에서 빈 칸의 좌표를 리스트로 반환합니다.
+    
     def evaluate(self):
         if self.is_win(computer, self.board):
             return 1
@@ -94,6 +99,7 @@ class AI(object):
             return 0
 
 컴퓨터가 승리하면 1, 사용자가 승리하면 -1, 비기면 0을 반환합니다.
+   
     def get_best_coord(self):
         score = -100
         best_coord = None
@@ -105,20 +111,22 @@ class AI(object):
         return best_coord
 
 미니맥스 알고리즘 실행 후, 최적의 수를 반환합니다.
+    
     def fill_board(self, coord, player):
         x, y = coord
         self.board[y][x] = player
 
 주어진 좌표에 해당 플레이어의 기호를 채웁니다.
-  def minimax(self, depth, alpha, beta, player):
-        self.cnt += 1
-        if alpha >= beta:
-            if player == computer:
-                return infinity
-            else:
-                return -infinity
-        if self.is_finish():
-            return self.evaluate()
+  
+      def minimax(self, depth, alpha, beta, player):
+            self.cnt += 1
+            if alpha >= beta:
+                if player == computer:
+                    return infinity
+                else:
+                    return -infinity
+            if self.is_finish():
+                return self.evaluate()
 
         coords = self.get_coords()
         max_score = -infinity
